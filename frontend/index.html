@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#0F172A" />
+  <meta name="description" content="Bharat Tech Atlas — Interactive map of India's 223,000+ startups, unicorns, incubators & accelerators. Real-time data from DPIIT, LinkedIn, Tracxn & Crunchbase." />
+  <meta name="keywords" content="Indian startups, startup map India, unicorns India, DPIIT startups, Bengaluru startups, Mumbai startups, startup ecosystem" />
+  <meta property="og:title" content="Bharat Tech Atlas — India's Startup Ecosystem Map" />
+  <meta property="og:description" content="Explore 125+ unicorns, 1000+ funded startups, and India's complete tech ecosystem on an interactive map." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://huggingface.co/spaces/Ram2005/StartupMap-India" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <title>Bharat Tech Atlas — India's Startup Ecosystem Map</title>
+
+  <!-- Preconnect to critical origins for speed -->
+  <link rel="preconnect" href="https://basemaps.cartocdn.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- DNS prefetch for API sources -->
+  <link rel="dns-prefetch" href="https://api.linkedin.com" />
+  <link rel="dns-prefetch" href="https://api.github.com" />
+
+  <!-- Critical font (Inter) — loaded early -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Preload map tiles style -->
+  <link rel="preload" href="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json" as="fetch" crossorigin />
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗺️</text></svg>" />
+
+  <!-- Inline critical CSS for instant first paint -->
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body, #root { width: 100%; height: 100%; overflow: hidden; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #0F172A; color: #F8FAFC; }
+    /* Loading skeleton */
+    #root:empty::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #0F172A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #root:empty::before {
+      content: '🗺️ Loading Bharat Tech Atlas...';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.1rem;
+      color: #94A3B8;
+      z-index: 1;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+
+  <!-- Register service worker for offline + caching -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => {
+            console.log('SW registered');
+            // Prefetch popular data after page load
+            if (reg.active) {
+              reg.active.postMessage({ type: 'PREFETCH_VIEWPORT' });
+            }
+          })
+          .catch(err => console.log('SW failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>

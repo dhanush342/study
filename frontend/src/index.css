@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-atlas-bg text-atlas-text;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-atlas-border/60 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-atlas-muted/40;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-atlas-bg/80 border border-atlas-border;
+  }
+  .gradient-text {
+    @apply text-brand-500;
+  }
+  .unicorn-badge {
+    @apply text-brand-500 font-semibold;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* MapLibre popup overrides */
+.maplibregl-popup-content {
+  @apply !bg-atlas-bg/95 !border !border-atlas-border !rounded-2xl !p-0 !shadow-2xl;
+  max-width: 340px !important;
+}
+.maplibregl-popup-tip {
+  border-top-color: rgba(51, 65, 85, 0.8) !important;
+}
+.maplibregl-popup-close-button {
+  @apply !text-atlas-muted !text-lg !right-2 !top-2 hover:!text-atlas-text;
+}
